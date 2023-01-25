@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: pull-sign-push-pipeline-2-
+spec:
+  pipelineRef:
+    name: pull-push-sign
+  params:
+  
+  workspaces:
+    - name: pull-sign-push-volume
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Mi
+      status: {}
