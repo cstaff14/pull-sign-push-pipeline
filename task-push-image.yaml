@@ -14,7 +14,7 @@ spec:
     - name: pass
       type: string
       description: password for registry account
-    - name: image_name
+    - name: image-name
       type: string
       description: name of the image to push
     steps:

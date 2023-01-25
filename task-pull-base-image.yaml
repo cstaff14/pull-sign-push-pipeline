@@ -1,4 +1,4 @@
-# TODO: maybe sign it too?
+# TODO: maybe tag it too?
 
 apiVersion: tekton.dev/v1beta1
 kind: Task
@@ -7,24 +7,12 @@ metadata:
   namespace: pull-sign-push-pipeline
 spec:
   params:
-    - name: image_to_pull
+    - name: image-to-pull
       description: the url to pull the image from
   steps:
-    - name: podman-pull
-      env:
-       - name: IMAGE_TO_PULL
-         valueFrom:
-           secretKeyRef:
-             key: image_to_pull
-             name: $(params.image_to_pull)
-      image: registry.access.redhat.com/ubi8/ubi:8.3-297
-      resources: {}
-      script: >-
-        #!/user/bin/env/bash
-      
-        yum install -y podman
-
-        podman pull $IMAGE_TO_PULL
+    - name: buildah-pull
+      image: quay.io/buildah/stable
+      command: ['buildah', 'pull', $(params.image-to-pull)]
 
   workspaces:
   - name: pull-sign-push-volume
