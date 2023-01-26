@@ -10,6 +10,10 @@ spec:
     - name: image-to-pull
       description: the url to pull the image from
   steps:
+    - name: hello-world1
+      image: ubuntu
+      command: ["/bin/bash"]
+      args: ["-c", "echo Hello World 1!"]
     - name: log-name
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       command: ["/bin/bash"]
