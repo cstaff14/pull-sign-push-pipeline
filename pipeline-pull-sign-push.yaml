@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pull-sign-push
+  namespace: pull-sign-push-pipeline
+spec:
+  params:
+    - name: registry
+      type: string
+      description: url for the registry to push to (docker.io, quay.io, etc.)
+    - name: user
+      type: string
+      description: username for the registry account
+    - name: pass
+      type: string
+      description: password for registry account
+    - name: image-name
+      type: string
+      description: name of the image to push
+  tasks:
+##-------------------------------------------
+# Pull an image
+##-------------------------------------------
+    - name: pull
+      params:
+        - name: image-to-pull
+          value: '$(params.registry)/$(params.image-name)'
+      taskRef:
+        kind: Task
+        name: pull-image
+##-------------------------------------------
+# Push an image
+##-------------------------------------------
+    - name: push
+      params:
+      - name: registry
+        value: $(params.registry)
+      - name: user
+        value: ${params.user}
+      - name: pass
+        value: $(params.pass)
+      - name: image-name
+        value: $(params.image-name)
+      taskRef:
+        kind: Task
+        name: push-image
+      runAfter:
+      - pull
+##-------------------------------------------
+# Workspace
+##-------------------------------------------
+workspaces:
+- name: pull-sign-push-volume      
+
+
+  

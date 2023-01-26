@@ -4,7 +4,7 @@ metadata:
   generateName: pull-sign-push-pipeline-2-
 spec:
   pipelineRef:
-    name: pull-push-sign
+    name: pull-sign-push
   params:
   
   workspaces:
