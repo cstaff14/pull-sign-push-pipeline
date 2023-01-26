@@ -15,6 +15,6 @@ spec:
       command: ['buildah', 'pull', $(params.image-to-pull)]
 
   workspaces:
-  - name: pull-sign-push-volume
+  - name: output
     mountPath: /
 

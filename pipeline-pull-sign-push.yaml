@@ -28,6 +28,9 @@ spec:
       taskRef:
         kind: Task
         name: pull-image
+      workspaces:
+      - name: output
+        workspace: pull-sign-push-volume
 ##-------------------------------------------
 # Push an image
 ##-------------------------------------------
@@ -44,6 +47,9 @@ spec:
       taskRef:
         kind: Task
         name: push-image
+      workspaces:
+      - name: input
+        workspace: pull-sign-push-volume
       runAfter:
       - pull
 ##-------------------------------------------

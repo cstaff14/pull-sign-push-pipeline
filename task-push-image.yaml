@@ -23,5 +23,5 @@ spec:
       command: ['buildah', 'push', '--creds=$(params.user):$(params.pass)', '--tls-verify=false', '$(params.registry)/$(params.user)/$(params.image-name)', 'docker://$(params.registry)/$(params.user)/$(params.image-name)']
 
   workspaces:
-    - name: pull-sign-push-volume
+    - name: input
       mountPath: /
