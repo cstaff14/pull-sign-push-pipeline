@@ -49,8 +49,8 @@ spec:
 ##-------------------------------------------
 # Workspace
 ##-------------------------------------------
-workspaces:
-- name: pull-sign-push-volume      
+  workspaces:
+  - name: pull-sign-push-volume      
 
 
   
