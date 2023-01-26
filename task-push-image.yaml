@@ -17,11 +17,11 @@ spec:
     - name: image-name
       type: string
       description: name of the image to push
-    steps:
-      - name: buildah-push
-        image: quay.io/buildah/stable
-        comand: ['buildah', 'push', '--creds=$(params.user):$(params.pass)', '--tls-verify=false', '$(params.registry)/$(params.user)/$(params.image-name)', 'docker://$(params.registry)/$(params.user)/$(params.image-name)']
+  steps:
+    - name: buildah-push
+      image: quay.io/buildah/stable
+      comand: ['buildah', 'push', '--creds=$(params.user):$(params.pass)', '--tls-verify=false', '$(params.registry)/$(params.user)/$(params.image-name)', 'docker://$(params.registry)/$(params.user)/$(params.image-name)']
 
-    workspaces:
-      - name: pull-sign-push-volume
-        mountPath: /
+  workspaces:
+    - name: pull-sign-push-volume
+      mountPath: /
