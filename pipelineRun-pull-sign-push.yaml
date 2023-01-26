@@ -5,8 +5,16 @@ metadata:
 spec:
   pipelineRef:
     name: pull-sign-push
+    namespace: pull-sign-push-pipeline
   params:
-  
+    - name: registry
+      value: quay.io
+    - name: user
+      value: rh_ee_castaffo
+    - name: pass
+      value: rh-ee-castaff-pull-secret
+    - name: image-name
+      value: app-sre/ubi8-ubi-minimal
   workspaces:
     - name: pull-sign-push-volume
       volumeClaimTemplate:
