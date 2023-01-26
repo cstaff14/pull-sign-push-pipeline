@@ -10,9 +10,13 @@ spec:
     - name: image-to-pull
       description: the url to pull the image from
   steps:
+    - name: log-name
+      image: registry.access.redhat.com/ubi8/ubi:8.3-297
+      command: ["/bin/bash"]
+      args: ["-c", "echo $(params.image-to-pull)"]
     - name: buildah-pull
       image: quay.io/buildah/stable
-      command: ['buildah', 'pull', $(params.image-to-pull)]
+      command: ['buildah', 'pull', '$(params.image-to-pull)']
 
   workspaces:
   - name: output
