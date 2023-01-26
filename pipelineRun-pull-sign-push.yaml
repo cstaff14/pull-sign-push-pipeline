@@ -2,10 +2,10 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   generateName: pull-sign-push-pipeline-2-
+  namespace: pull-sign-push-pipeline
 spec:
   pipelineRef:
     name: pull-sign-push
-    namespace: pull-sign-push-pipeline
   params:
     - name: registry
       value: quay.io
