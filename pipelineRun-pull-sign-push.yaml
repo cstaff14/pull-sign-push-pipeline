@@ -8,15 +8,15 @@ spec:
     name: pull-sign-push
   params:
     - name: pull-image
-      value: registry.access.redhat.com/ubi8/ubi:8.3-297
+      value: "registry.access.redhat.com/ubi8/ubi:8.6-903.1661794351"
     - name: push-registry
-      value: quay.io
+      value: "quay.io"
     - name: user
-      value: rh_ee_castaffo
+      value: "rh_ee_castaffo"
     - name: pass
       value: rh-ee-castaffo-pull-secret
     - name: image-name
-      value: app-sre/ubi8-ubi-minimal
+      value: "ubi:8.3-297"
   serviceAccountName: pipeline
   workspaces:
     - name: pull-sign-push-volume
