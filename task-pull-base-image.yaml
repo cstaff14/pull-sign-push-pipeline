@@ -18,9 +18,9 @@ spec:
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       command: ["/usr/bin/bash"]
       args: ["-c", "echo $(params.image-to-pull)"]
-    - name: buildah-pull
-      image: quay.io/buildah/stable
-      command: ["buildah"]
+    - name: podman-pull
+      image: registry.access.redhat.com/ubi8/ubi:8.3-297
+      command: ["podman"]
       args:
         - "pull"
         - "$(params.image-to-pull)"
