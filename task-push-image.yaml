@@ -23,6 +23,9 @@ spec:
       command: ['buildah']
       args:
         - 'images'
+      workingDir: /usr/var/containers
+      securityContext:
+        privileged: true
     - name: buildah-push
       image: quay.io/buildah/stable
       command: ['buildah']
