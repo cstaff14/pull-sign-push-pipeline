@@ -18,13 +18,13 @@ spec:
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       command: ["/usr/bin/bash"]
       args: ["-c", "echo $(params.image-to-pull)"]
-    - name: podman-pull
-      image: registry.access.redhat.com/ubi8/ubi:8.3-297
-      command: ["podman"]
+    - name: buildah-pull
+      image: quay.io/buildah/stable
+      command: ["buildah"]
       args:
         - "pull"
         - "$(params.image-to-pull)"
-      workingDir: /var/lib/containers
+      workingDir: /usr/var/containers
   workspaces:
   - name: output
     mountPath: /output
