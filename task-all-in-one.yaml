@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: pull-sign-push
+  namespace: pull-sign-push-pipeline
+spec:
+  params:
+    - name: pull-image
+      type: string
+      description: full registry/image:tag for the image to pull
+    - name: push-registry
+      type: string
+      description: url for the registry to push to (docker.io, quay.io, etc.)
+    - name: user
+      type: string
+      description: username for the push registry account
+    - name: pass
+      type: string
+      description: password for registry account
+    - name: push-image-name
+      type: string
+      description: name of the image to push
+    #- name: cosign-key
+    #  type: string
+    #  description: cosign private key to sign the image
+  steps:
+    - name: pull-sign-push
+      env: 
+        - name: PULL_IMAGE
+          valueFrom:
+            secretKeyRef:
+              key: pull-image
+              name: $(params.pull-image)
+        - name: PUSH_REGISTRY
+          valueFrom:
+            secretKeyRef:
+              key: registry
+              name: $(params.push-registry)
+        - name: REGISTRY_USER
+          valueFrom:
+            secretKeyRef:
+              key: user
+              name: $(params.user)
+        - name: REGISTRY_PASS
+          valueFrom:
+            secretKeyRef:
+              key: pass
+              name: $(params.pass)
+        - name: PUSH_IMAGE_NAME
+          valueFrom:
+            secretKeyRef:
+              key: image
+              name: $(params.push-image-name)
+        
+      image: registry.access.redhat.com/ubi8/ubi:8.3-297
+      script: >-
+        #!/usr/bin/env bash
+
+        yum install podman -y -q
+
+        # pull the image
+        podman pull $PULL_IMAGE
+
+        # tag the image
+        podman tag $PULL_IMAGE $PUSH_REGISTRY/$REGISTRY_USER/$PUSH_IMAGE_NAME
+
+        # log in to the registry then push
+        podman login --tls-verify=false -u $REGISTRY_USER -p $REGISTRY_PASS $PUSH_REGISTRY
+        podman push $PUSH_REGISTRY/$REGISTRY_USER/$PUSH_IMAGE_NAME
+
+      workingDir: /workspace
+  workspaces:
+    - name: files
+      mountPath: /files

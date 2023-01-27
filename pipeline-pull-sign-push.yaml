@@ -5,56 +5,72 @@ metadata:
   namespace: pull-sign-push-pipeline
 spec:
   params:
-    - name: registry
+    - name: pull-image
+      type: string
+      description: full registry/image:tag for the image to pull
+    - name: push-registry
       type: string
       description: url for the registry to push to (docker.io, quay.io, etc.)
     - name: user
       type: string
-      description: username for the registry account
+      description: username for the push registry account
     - name: pass
       type: string
-      description: password for registry account
+      description: password for push registry account
     - name: image-name
       type: string
       description: name of the image to push
   tasks:
+    - name: pull-sign-push
+      params:
+        - name: pull-image
+          value: $(params.pull-image)
+        - name: push-registry
+          value: $(params.push-registry)
+        - name: user
+          value: $(params.user)
+        - name: pass
+          value: $(params.pass)
+        - name: push-image-name
+          value: $(params.image-name)
+
 ##-------------------------------------------
 # Pull an image
 ##-------------------------------------------
-    - name: pull
-      params:
-        - name: image-to-pull
-          value: '$(params.registry)/$(params.image-name)'
-      taskRef:
-        kind: Task
-        name: pull-image
-      workspaces:
-      - name: output
-        workspace: pull-sign-push-volume
+ #   - name: pull
+ #     params:
+ #       - name: image-to-pull
+ #         value: '$(params.registry)/$(params.image-name)'
+ #     taskRef:
+ #       kind: Task
+#        name: pull-image
+ #     workspaces:
+ #     - name: output
+ #       workspace: pull-sign-push-volume
 ##-------------------------------------------
 # Push an image
 ##-------------------------------------------
-    - name: push
-      params:
-      - name: registry
-        value: $(params.registry)
-      - name: user
+#    - name: push
+#      params:
+#      - name: registry
+#        value: $(params.registry)
+#      - name: user#
         value: ${params.user}
-      - name: pass
-        value: $(params.pass)
-      - name: image-name
-        value: $(params.image-name)
-      taskRef:
-        kind: Task
-        name: push-image
-      workspaces:
-      - name: input
-        workspace: pull-sign-push-volume
-      runAfter:
-      - pull
+#      - name: pass#
+#        value: $(params.pass)
+#      - name: image-name#
+#        value: $(params.image-name)
+#      taskRef:#
+#        kind: Task
+#        name: push-image
+#      workspaces:
+ #     - name: input#
+#        workspace: pull-sign-push-volume
+#      runAfter:
+#      - pull
 ##-------------------------------------------
 # Workspace
-##-------------------------------------------
+##-------------------------------------------#
   workspaces:
   - name: pull-sign-push-volume      
 

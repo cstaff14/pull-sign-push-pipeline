@@ -7,7 +7,9 @@ spec:
   pipelineRef:
     name: pull-sign-push
   params:
-    - name: registry
+    - name: pull-image
+      value: registry.access.redhat.com/ubi8/ubi:8.3-297
+    - name: push-registry
       value: quay.io
     - name: user
       value: rh_ee_castaffo
