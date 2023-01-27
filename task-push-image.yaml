@@ -20,7 +20,16 @@ spec:
   steps:
     - name: buildah-push
       image: quay.io/buildah/stable
-      command: ['buildah', 'push', '--creds=$(params.user):$(params.pass)', '--tls-verify=false', '$(params.registry)/$(params.user)/$(params.image-name)', 'docker://$(params.registry)/$(params.user)/$(params.image-name)']
-
+      command: ['buildah']
+      args:
+        - 'push'
+        - '--creds=$(params.user):$(params.pass)'
+        - '--tls-verify=false'
+        - '$(params.registry)/$(params.user)/$(params.image-name)'
+        - 'docker://$(params.registry)/$(params.user)/$(params.image-name)'
+      workingDir: /usr/var/containers
+      securityContext:
+        privileged: true
   workspaces:
     - name: input
+      mountPath: /input
