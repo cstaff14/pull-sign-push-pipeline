@@ -25,6 +25,8 @@ spec:
         - "pull"
         - "$(params.image-to-pull)"
       workingDir: /usr/var/containers
+      securityContext:
+        privileged: true
   workspaces:
   - name: output
     mountPath: /output

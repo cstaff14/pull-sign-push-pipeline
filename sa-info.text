@@ -1,0 +1,2 @@
+need to make service account priveleged:
+oc adm policy add-scc-to-user privileged -z pipeline

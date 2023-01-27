@@ -15,6 +15,7 @@ spec:
       value: rh-ee-castaff-pull-secret
     - name: image-name
       value: app-sre/ubi8-ubi-minimal
+  serviceAccountName: pipeline
   workspaces:
     - name: pull-sign-push-volume
       volumeClaimTemplate:
