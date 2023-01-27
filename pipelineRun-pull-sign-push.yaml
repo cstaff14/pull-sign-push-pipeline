@@ -12,7 +12,7 @@ spec:
     - name: user
       value: rh_ee_castaffo
     - name: pass
-      value: rh-ee-castaff-pull-secret
+      value: rh-ee-castaffo-pull-secret
     - name: image-name
       value: app-sre/ubi8-ubi-minimal
   serviceAccountName: pipeline

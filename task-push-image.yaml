@@ -18,6 +18,11 @@ spec:
       type: string
       description: name of the image to push
   steps:
+    - name: list-images
+      image: quay.io/buildah/stable
+      command: ['buildah']
+      args:
+        - 'images'
     - name: buildah-push
       image: quay.io/buildah/stable
       command: ['buildah']
