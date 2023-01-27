@@ -33,6 +33,12 @@ spec:
           value: $(params.pass)
         - name: push-image-name
           value: $(params.image-name)
+      taskRef:
+        kind: Task
+        name: pull-sign-push
+      workspaces:
+        - name: files
+          workspace: pull-sign-push-volume
 ##-------------------------------------------
 # Workspace
 ##-------------------------------------------#
