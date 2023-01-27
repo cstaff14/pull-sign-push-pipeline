@@ -20,7 +20,10 @@ spec:
       args: ["-c", "echo $(params.image-to-pull)"]
     - name: buildah-pull
       image: quay.io/buildah/stable
-      command: ['buildah', 'pull', '$(params.image-to-pull)', '--security-opt apparmor=unconfined']
+      command: ["buildah"]
+      args:
+        - "pull"
+        - "$(params.image-to-pull)"
 
   workspaces:
   - name: output
