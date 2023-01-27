@@ -33,6 +33,12 @@ spec:
           value: $(params.pass)
         - name: push-image-name
           value: $(params.image-name)
+##-------------------------------------------
+# Workspace
+##-------------------------------------------#
+  workspaces:
+  - name: pull-sign-push-volume      
+
 
 ##-------------------------------------------
 # Pull an image
@@ -55,7 +61,7 @@ spec:
 #      - name: registry
 #        value: $(params.registry)
 #      - name: user#
-        value: ${params.user}
+#        value: ${params.user}
 #      - name: pass#
 #        value: $(params.pass)
 #      - name: image-name#
@@ -68,11 +74,6 @@ spec:
 #        workspace: pull-sign-push-volume
 #      runAfter:
 #      - pull
-##-------------------------------------------
-# Workspace
-##-------------------------------------------#
-  workspaces:
-  - name: pull-sign-push-volume      
 
 
   
