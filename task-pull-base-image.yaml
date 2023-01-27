@@ -16,6 +16,9 @@ spec:
       args:
         - "pull"
         - "$(params.image-to-pull)"
+      command: ["buildah"]
+      args:
+        - "images"
       workingDir: /usr/var/containers
       securityContext:
         privileged: true
