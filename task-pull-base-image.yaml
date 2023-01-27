@@ -19,6 +19,14 @@ spec:
       workingDir: /usr/var/containers
       securityContext:
         privileged: true
+    - name: list-images
+      image: quay.io/buildah/stable
+      command: ['buildah']
+      args:
+        - 'images'
+      workingDir: /usr/var/containers
+      securityContext:
+        privileged: true
   workspaces:
   - name: output
     mountPath: /output
