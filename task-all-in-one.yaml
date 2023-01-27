@@ -59,14 +59,14 @@ spec:
         yum install podman -y -q
 
         # pull the image
-        podman pull $PULL_IMAGE
+        podman pull $(params.pull-image)
 
         # tag the image
-        podman tag $PULL_IMAGE $PUSH_REGISTRY/$REGISTRY_USER/$PUSH_IMAGE_NAME
+        podman tag $(params.pull-image) $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
         # log in to the registry then push
-        podman login --tls-verify=false -u $REGISTRY_USER -p $REGISTRY_PASS $PUSH_REGISTRY
-        podman push $PUSH_REGISTRY/$REGISTRY_USER/$PUSH_IMAGE_NAME
+        podman login --tls-verify=false -u $(params.user) -p $(params.pass) $(params.push-registry)
+        podman push $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:
