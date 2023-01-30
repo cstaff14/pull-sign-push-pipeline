@@ -56,6 +56,8 @@ spec:
         echo "";
         echo "push the image"
 
+        podman login --tls-verify=false -u $(params.user) -p $(params.pass) $(params.push-registry)
+
         podman push $(params.push-registry)/$(params.user)/$(params.push-image-name) --remove-signatures
 
         echo "";
@@ -63,14 +65,17 @@ spec:
 
         echo $(params.cosign-key) > cosign.key
 
-        printf $(params.cosign-key-password) | cosign sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        echo "{
+          {
+            "auths": {
+              "$(params.push-registry)" {
+                Username: "$(params.user)",
+                Secret: "$(params.pass)"
+              }
+            }
+          }" > ~/.docker/config.json
 
-        echo "";
-        echo "log in to the registry then push"
-        
-        podman login --tls-verify=false -u $(params.user) -p $(params.pass) $(params.push-registry)
-        
-        podman push $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        printf $(params.cosign-key-password) | cosign sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:
