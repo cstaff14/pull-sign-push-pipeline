@@ -24,6 +24,7 @@ spec:
       type: string
       description: cosign private key to sign the image
     - name: cosign-key-password
+      type: string
       description: password for the cosign private key
   steps:
     - name: pull-sign-push

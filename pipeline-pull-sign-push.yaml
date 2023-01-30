@@ -20,6 +20,12 @@ spec:
     - name: image-name
       type: string
       description: name of the image to push
+    - name: cosign-key
+      type: string
+      description: cosign private key to sign the image
+    - name: cosign-key-password
+      type: string
+      description: password for the cosign private key
   tasks:
     - name: pull-sign-push
       params:
@@ -33,6 +39,10 @@ spec:
           value: $(params.pass)
         - name: push-image-name
           value: $(params.image-name)
+        - name: cosign-key
+          value: $(params.cosign-key)
+        - name: cosign-key-password
+          value: $(params.cosign-key-password)
       taskRef:
         kind: Task
         name: pull-sign-push
