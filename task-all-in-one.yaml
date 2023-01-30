@@ -40,6 +40,8 @@ spec:
 
         yum install golang -y -q
 
+        yum install git -y -q
+
         git clone https://github.com/sigstore/cosign
 
         go install ./cosign/cmd/cosign
