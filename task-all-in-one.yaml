@@ -20,9 +20,11 @@ spec:
     - name: push-image-name
       type: string
       description: name of the image to push
-    #- name: cosign-key
-    #  type: string
-    #  description: cosign private key to sign the image
+    - name: cosign-key
+      type: string
+      description: cosign private key to sign the image
+    - name: cosign-key-password
+      description: password for the cosign private key
   steps:
     - name: pull-sign-push
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
@@ -33,14 +35,36 @@ spec:
 
         yum install podman -y -q
 
+        # install go to install cosign
+
+        yum install golang -y -q
+
+        git clone https://github.com/sigstore/cosign
+
+        go install ./cosign/cmd/cosign
+
         echo "pull the image"
         
         podman pull $(params.pull-image)
 
+        echo "";
         echo "tag the image"
         
         podman tag $(params.pull-image) $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
+        echo "";
+        echo "push the image"
+
+        podman push $(params.push-registry)/$(params.user)/$(params.push-image-name) --remove-signatures
+
+        echo "";
+        echo "sign the image"
+
+        echo $(params.cosign-key) > cosign.key
+
+        printf $(params.cosign-key-password) | cosign sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+
+        echo "";
         echo "log in to the registry then push"
         
         podman login --tls-verify=false -u $(params.user) -p $(params.pass) $(params.push-registry)
