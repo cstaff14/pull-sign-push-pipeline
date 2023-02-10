@@ -41,10 +41,25 @@ spec:
         yum install golang -y -q
 
         yum install git -y -q
+        
+        echo "";
+        echo "==================";
 
-        git clone https://github.com/sigstore/cosign
+        #ls
 
-        go install ./cosign/cmd/cosign
+        echo "=================";
+        echo ""
+
+        go install github.com/sigstore/cosign/cmd/cosign@latest
+
+        echo "";
+        echo "==================";
+
+        ls
+
+        echo "=================";
+        echo ""
+
 
         echo "pull the image"
         
@@ -66,6 +81,12 @@ spec:
         echo "sign the image"
 
         echo $(params.cosign-key) > cosign.key
+        
+        echo "===========";
+        echo $GOPATH
+
+        echo $GOBIN ;
+        echo "==========="
 
         echo "{
           {
