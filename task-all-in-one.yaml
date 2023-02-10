@@ -36,30 +36,11 @@ spec:
 
         yum install podman -y -q
 
-        # install go to install cosign
-
-        yum install golang -y -q
-
-        yum install git -y -q
+        # install cosign
         
-        echo "";
-        echo "==================";
+        wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64"
 
-        #ls
-
-        echo "=================";
-        echo ""
-
-        go install github.com/sigstore/cosign/cmd/cosign@latest
-
-        echo "";
-        echo "==================";
-
-        ls
-
-        echo "=================";
-        echo ""
-
+        chmod +x cosign-linux-amd64
 
         echo "pull the image"
         
@@ -82,12 +63,6 @@ spec:
 
         echo $(params.cosign-key) > cosign.key
         
-        echo "===========";
-        echo $GOPATH
-
-        echo $GOBIN ;
-        echo "==========="
-
         echo "{
           {
             "auths": {
@@ -98,7 +73,7 @@ spec:
             }
           }" > ~/.docker/config.json
 
-        printf $(params.cosign-key-password) | cosign sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:
