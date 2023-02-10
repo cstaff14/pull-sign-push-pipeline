@@ -37,6 +37,8 @@ spec:
         yum install podman -y -q
 
         # install cosign
+
+        yum install wget -y -q
         
         wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64"
 
