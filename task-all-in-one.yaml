@@ -40,7 +40,7 @@ spec:
 
         yum install wget -y -q
         
-        wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64"
+        wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64" -q
 
         chmod +x cosign-linux-amd64
 
