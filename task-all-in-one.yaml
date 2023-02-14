@@ -20,14 +20,20 @@ spec:
     - name: push-image-name
       type: string
       description: name of the image to push
-    - name: cosign-key
+    - name: cosign-key-secret
       type: string
-      description: cosign private key to sign the image
+      description: name of the secret that holds the cosign private key
     - name: cosign-key-password
       type: string
       description: password for the cosign private key
   steps:
     - name: pull-sign-push
+      env:
+      - name: COSIGN_KEY
+        valueFrom:
+          secretKeyRef:
+            name: $(params.cosign-key-secret)
+            key: key
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       script: >-
         #!/usr/bin/env bash
@@ -61,10 +67,12 @@ spec:
         podman push $(params.push-registry)/$(params.user)/$(params.push-image-name) --remove-signatures
 
         echo "";
-        echo "sign the image"
+        echo "sign the image";
 
-        echo $(params.cosign-key) > cosign.key
+        echo ${COSIGN_KEY} > ~/cosign.key
         
+        cat ~/cosign.key
+
         echo "{
           {
             "auths": {
@@ -75,7 +83,9 @@ spec:
             }
           }" > ~/.docker/config.json
 
-        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        cat ~/.docker/config.json
+
+        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key ~/cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:
