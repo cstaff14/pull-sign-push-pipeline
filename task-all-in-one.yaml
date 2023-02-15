@@ -71,9 +71,9 @@ spec:
 
         echo -e  ${COSIGN_KEY}
         
-        echo -e ${COSIGN_KEY} > ~/cosign.key
+        echo -e ${COSIGN_KEY} > cosign.key
         
-        cat ~/cosign.key
+        cat cosign.key
 
         echo "{
           {
@@ -87,7 +87,7 @@ spec:
 
         cat ~/.docker/config.json
 
-        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key ~/cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:
