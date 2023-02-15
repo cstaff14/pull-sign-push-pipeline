@@ -69,11 +69,7 @@ spec:
         echo "";
         echo "sign the image";
 
-        echo -e  ${COSIGN_KEY}
-        
         echo -e ${COSIGN_KEY} > cosign.key
-        
-        cat cosign.key
 
         echo "{
             "auths": {
