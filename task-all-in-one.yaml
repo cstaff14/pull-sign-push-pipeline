@@ -72,10 +72,10 @@ spec:
         echo -e ${COSIGN_KEY} > cosign.key
 
         echo "{
-            "auths": {
-              "$(params.push-registry)" {
-                Username: "$(params.user)",
-                Secret: "$(params.pass)"
+            \"auths\": {
+              \"$(params.push-registry)\" {
+                Username: \"$(params.user)\",
+                Secret: \"$(params.pass)\"
               }
             }" > ~/.docker/config.json
 
