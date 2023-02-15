@@ -76,14 +76,12 @@ spec:
         cat cosign.key
 
         echo "{
-          {
             "auths": {
               "$(params.push-registry)" {
                 Username: "$(params.user)",
                 Secret: "$(params.pass)"
               }
-            }
-          }" > ~/.docker/config.json
+            }" > ~/.docker/config.json
 
         cat ~/.docker/config.json
 
