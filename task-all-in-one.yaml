@@ -73,9 +73,9 @@ spec:
 
         echo "{
             \"auths\": {
-              \"$(params.push-registry)\" {
-                Username: \"$(params.user)\",
-                Secret: \"$(params.pass)\"
+              \"$(params.push-registry)\": {
+                \"Username\": \"$(params.user)\",
+                \"Secret\": \"$(params.pass)\"
               }
             }" > ~/.docker/config.json
 
