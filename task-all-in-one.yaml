@@ -11,9 +11,9 @@ spec:
     - name: push-registry
       type: string
       description: url for the registry to push to (docker.io, quay.io, etc.)
-    - name: user
+    - name: registry-credential-secret
       type: string
-      description: username for the push registry account
+      description: name of the secret that contains a 'user' and 'pass' that logs into the push registry
     - name: docker-config-secret
       type: string
       description: name of the secret that holds the user's docker config
@@ -29,16 +29,26 @@ spec:
   steps:
     - name: pull-sign-push
       env:
-      - name: COSIGN_KEY
+      - name: REGISTRY_USER
         valueFrom:
           secretKeyRef:
-            name: $(params.cosign-key-secret)
-            key: key
+            name: $(params.registry-credential-secret)
+            key: user
+      - name: REGISTRY_PASS
+        valueFrom:
+          secretKeyRef:
+            name: $(params.registry-credential-secret)
+            key: pass
       - name: DOCKER_CONFIG
         valueFrom:
           secretKeyRef:
             name: $(params.docker-config-secret)
             key: config
+      - name: COSIGN_KEY
+        valueFrom:
+          secretKeyRef:
+            name: $(params.cosign-key-secret)
+            key: key
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       script: >-
         #!/usr/bin/env bash
@@ -62,14 +72,14 @@ spec:
         echo "";
         echo "tag the image"
         
-        podman tag $(params.pull-image) $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        podman tag $(params.pull-image) $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
 
         echo "";
         echo "push the image"
 
-        podman login --tls-verify=false -u $(params.user) -p $(params.pass) $(params.push-registry)
+        podman login --tls-verify=false -u ${REGISTRY_USER} -p ${REGISTRY_PASS} $(params.push-registry)
 
-        podman push $(params.push-registry)/$(params.user)/$(params.push-image-name) --remove-signatures
+        podman push $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name) --remove-signatures
 
         echo "";
         echo "sign the image";
@@ -80,7 +90,7 @@ spec:
 
         cat ~/.docker/config.json
 
-        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/$(params.user)/$(params.push-image-name)
+        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
 
       workingDir: /workspace
   workspaces:

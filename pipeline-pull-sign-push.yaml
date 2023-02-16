@@ -11,9 +11,9 @@ spec:
     - name: push-registry
       type: string
       description: url for the registry to push to (docker.io, quay.io, etc.)
-    - name: user
+    - name: registry-credential-secret
       type: string
-      description: username for the push registry account
+      description: name of the secret that contains a 'user' and 'pass' that logs into the push registry
     - name: docker-config-secret
       type: string
       description: name of the secret that holds the user's docker config 
