@@ -33,8 +33,8 @@ spec:
           value: $(params.pull-image)
         - name: push-registry
           value: $(params.push-registry)
-        - name: user
-          value: $(params.user)
+        - name: registry-credential-secret
+          value: $(params.registry-credential-secret)
         - name: docker-config-secret
           value: $(params.docker-config-secret)
         - name: push-image-name
