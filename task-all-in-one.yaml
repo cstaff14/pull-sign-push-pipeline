@@ -14,9 +14,9 @@ spec:
     - name: user
       type: string
       description: username for the push registry account
-    - name: pass
+    - name: docker-config-secret
       type: string
-      description: password for registry account
+      description: name of the secret that holds the user's docker config
     - name: push-image-name
       type: string
       description: name of the image to push
@@ -34,6 +34,11 @@ spec:
           secretKeyRef:
             name: $(params.cosign-key-secret)
             key: key
+      - name: DOCKER_CONFIG
+        valueFrom:
+          secretKeyRef:
+            name: $(params.docker-config-secret)
+            key: config
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       script: >-
         #!/usr/bin/env bash
@@ -71,14 +76,7 @@ spec:
 
         echo -e ${COSIGN_KEY} > cosign.key
 
-        echo "{
-            \"auths\": {
-              \"$(params.push-registry)\": {
-                \"Username\": \"$(params.user)\",
-                \"Secret\": \"$(params.pass)\"
-              }
-            }
-          }" > ~/.docker/config.json
+        echo ${DOCKER_CONFIG} > ~/.docker/config.json
 
         cat ~/.docker/config.json
 

@@ -14,9 +14,9 @@ spec:
     - name: user
       type: string
       description: username for the push registry account
-    - name: pass
+    - name: docker-config-secret
       type: string
-      description: password for push registry account
+      description: name of the secret that holds the user's docker config 
     - name: image-name
       type: string
       description: name of the image to push
@@ -35,8 +35,8 @@ spec:
           value: $(params.push-registry)
         - name: user
           value: $(params.user)
-        - name: pass
-          value: $(params.pass)
+        - name: docker-config-secret
+          value: $(params.docker-config-secret)
         - name: push-image-name
           value: $(params.image-name)
         - name: cosign-key-secret
