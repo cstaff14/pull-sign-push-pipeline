@@ -50,46 +50,33 @@ spec:
             name: $(params.cosign-key-secret)
             key: key
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
-      script: >-
+      script: |
         #!/usr/bin/env bash
-        
         set +x
 
         yum install podman -y -q
 
         # install cosign
-
-        yum install wget -y -q
-        
+        yum install wget -y -q 
         wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign-linux-amd64" -q
-
         chmod +x cosign-linux-amd64
 
         echo "pull the image"
-        
         podman pull $(params.pull-image)
 
-        echo "";
+        echo ""
         echo "tag the image"
-        
         podman tag $(params.pull-image) $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
 
-        echo "";
+        echo ""
         echo "push the image"
-
         podman login --tls-verify=false -u ${REGISTRY_USER} -p ${REGISTRY_PASS} $(params.push-registry)
-
         podman push $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name) --remove-signatures
 
-        echo "";
-        echo "sign the image";
-
+        echo ""
+        echo "sign the image"
         echo -e ${COSIGN_KEY} > cosign.key
-
         echo ${DOCKER_CONFIG} > ~/.docker/config.json
-
-        cat ~/.docker/config.json
-
         printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
 
       workingDir: /workspace
