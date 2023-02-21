@@ -1,4 +1,0 @@
-need to put \n where there are new lines in the private key and delete the actual new line all one line like this firstline\nsecondline\n due to how echo -e works
-
-can docker config secret formatting from https://docs.docker.com/engine/reference/commandline/login/
-- specifically for quay.io can go User Settings > generate encrypted password > Docker Configuration
