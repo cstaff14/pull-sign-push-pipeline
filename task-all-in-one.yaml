@@ -22,10 +22,7 @@ spec:
       description: name of the image to push
     - name: cosign-key-secret
       type: string
-      description: name of the secret that holds the cosign private key
-    - name: cosign-key-password
-      type: string
-      description: password for the cosign private key
+      description: name of the secret that holds the cosign private key and its password
   steps:
     - name: pull-sign-push
       env:
@@ -49,6 +46,11 @@ spec:
           secretKeyRef:
             name: $(params.cosign-key-secret)
             key: key
+      - name: COSIGN_KEY_PASS
+        valueFrom:
+          secretKeyRef:
+            name: $(params.cosign-key-secret)
+            key: password
       image: registry.access.redhat.com/ubi8/ubi:8.3-297
       script: |
         #!/usr/bin/env bash
@@ -77,9 +79,5 @@ spec:
         echo "sign the image"
         echo -e ${COSIGN_KEY} > cosign.key
         echo ${DOCKER_CONFIG} > ~/.docker/config.json
-        printf $(params.cosign-key-password) | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
+        printf ${COSIGN_KEY_PASS} | ./cosign-linux-amd64 sign --verbose --key cosign.key $(params.push-registry)/${REGISTRY_USER}/$(params.push-image-name)
 
-      workingDir: /workspace
-  workspaces:
-    - name: files
-      mountPath: /files

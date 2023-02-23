@@ -8,23 +8,15 @@ spec:
     name: pull-sign-push
   params:
     - name: pull-image
-      value: "registry.access.redhat.com/ubi8/ubi:8.6-903.1661794351"
+      value: ""
     - name: push-registry
-      value: "quay.io"
-    - name: user
-      value: "rh_ee_castaffo"
-    - name: pass
-      value: rh-ee-castaffo-pull-secret
+      value: ""
+    - name: registry-credential-secret
+      value: ""
+    - name: docker-config-secret
+      value: "" 
     - name: image-name
-      value: "ubi:8.3-297"
+      value: ""
+    - name: cosign-key-secret
+      value: ""
   serviceAccountName: pipeline
-  workspaces:
-    - name: pull-sign-push-volume
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 10Mi
-        status: {}

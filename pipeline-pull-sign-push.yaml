@@ -22,10 +22,7 @@ spec:
       description: name of the image to push
     - name: cosign-key-secret
       type: string
-      description: name of the secret that holds the cosign private key
-    - name: cosign-key-password
-      type: string
-      description: password for the cosign private key
+      description: name of the secret that holds the cosign private key and the password for the private key
   tasks:
     - name: pull-sign-push
       params:
@@ -41,19 +38,9 @@ spec:
           value: $(params.image-name)
         - name: cosign-key-secret
           value: $(params.cosign-key-secret)
-        - name: cosign-key-password
-          value: $(params.cosign-key-password)
       taskRef:
         kind: Task
         name: pull-sign-push
-      workspaces:
-        - name: files
-          workspace: pull-sign-push-volume
-##-------------------------------------------
-# Workspace
-##-------------------------------------------#
-  workspaces:
-  - name: pull-sign-push-volume      
 
 
 ##-------------------------------------------
