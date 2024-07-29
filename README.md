@@ -23,7 +23,7 @@ becomes
 ```
 
 ## Docker config secret
-can get formatting formatting from https://docs.docker.com/engine/reference/commandline/login/
+can get formatting from https://docs.docker.com/engine/reference/commandline/login/
 - specifically for quay.io can go User Settings > generate encrypted password > Docker Configuration
 
 
